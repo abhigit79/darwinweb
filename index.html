@@ -3,92 +3,58 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Darwin Edge AI | AI Runtime for Intelligent Machines</title>
-  <meta name="description" content="Darwin Edge AI is building the AI runtime of the future for intelligent machines and connected devices." />
+  <title>Engineering Portfolio | Embedded AI, Multimodal Systems, Physical AI</title>
+  <meta name="description" content="A technical engineering portfolio spanning resource-constrained AI hardware, multimodal AI, physical AI, financial intelligence, and research interests." />
   <link rel="icon" href="images/logo.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="css/style.css" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLYBDSSKZY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-LLYBDSSKZY");
+  </script>
 </head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-LLYBDSSKZY"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-LLYBDSSKZY');
-</script>
 <body>
-  <header class="site-header">
-    <a class="brand" href="index.html">
-      <img src="images/logo.svg" alt="Darwin Edge AI logo" />
-      <span>Darwin Edge AI</span>
+  <div class="shell-grid" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="Portfolio home">
+      <img src="images/logo.svg" alt="" />
+      <span>Systems Portfolio</span>
     </a>
-    <button class="nav-toggle" aria-label="Open navigation" aria-expanded="false">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-    <nav class="site-nav">
-      <a class="active" href="index.html">Home</a>
-      <div class="nav-item"><a href="products.html">Product</a><div class="dropdown"><a href="products.html">Overview</a><a href="sdk.html">SDK</a></div></div>
-      <div class="nav-item">
-        <a href="solutions.html">Solutions</a>
-        <div class="dropdown">
-          <a href="solutions.html#smart-wearables">Smart Wearables</a>
-          <a href="solutions.html#medical-devices">Medical Devices</a>
-        </div>
-      </div>
-      <a href="research.html">Research</a>
-      <a href="careers.html">Career</a>
+    <nav class="quick-nav" aria-label="Quick links">
       <a href="contact.html">Contact</a>
     </nav>
   </header>
 
-  <main>
-    <section class="future-hero section">
-      <div class="future-copy">
-        <p class="eyebrow"></p>
-        <p class="eyebrow">We believe the future machines will be smart. 
-          The gap between your smartphone and other machines will be bridged.</p>
-        <h1>We are building that bridge</h1>
-        <p class="future-subtitle">Bring intelligence to all your devices.</p>
-        <p class="future-statement">
-          Keep an eye for our solutions.
-        </p>
+  <main class="app-shell">
+    <section class="hero-panel" aria-labelledby="hero-title">
+      <div>
+        <p class="eyebrow">Engineering / AI / physical computing</p>
+        <h1 id="hero-title">AI systems that connect intelligence to the physical world.</h1>
+        <p class="hero-line">Embedded AI &middot; Text, Audio and Vision &middot; Physical AI &middot; Sensor Platforms</p>
       </div>
-      <div class="future-orbit" aria-hidden="true">
-        <div class="runtime-core"></div>
-        <span class="orbit-line orbit-a"></span>
-        <span class="orbit-line orbit-b"></span>
-        <span class="orbit-dot dot-a"></span>
-        <span class="orbit-dot dot-b"></span>
-        <span class="orbit-dot dot-c"></span>
+      <div class="hero-instrument" id="heroSections" aria-label="Portfolio sections"></div>
+    </section>
+<section class="project-zone" aria-label="Projects">
+      <div class="zone-heading">
+        <p class="eyebrow">Linked project</p>
+        <span id="projectCount"></span>
       </div>
+      <div class="project-carousel" id="projectCarousel" tabindex="0" aria-label="Horizontally scrollable project carousel"></div>
     </section>
   </main>
 
-  <footer class="site-footer">
-  <div>
-    <a class="brand footer-brand" href="index.html">
-      <img src="images/logo.svg" alt="Darwin Edge AI logo" />
-      <span>Darwin Edge AI</span>
-    </a>
-    <p>Building the AI runtime of the future.</p>
+  <div class="modal-backdrop" id="modalBackdrop" hidden>
+    <section class="project-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal-close" id="modalClose" type="button" aria-label="Close project detail">Close</button>
+      <div id="modalContent"></div>
+    </section>
   </div>
-  <div class="footer-links">
-    <a href="products.html">Product</a>
-    <a href="solutions.html">Solutions</a>
-    <a href="research.html">Research</a>
-    <a href="careers.html">Career</a>
-    <a href="contact.html">Contact</a>
-  </div>
-</footer>
 
+  <script src="js/projects.js"></script>
   <script src="js/script.js"></script>
 </body>
 </html>
-
-
-
-
 
