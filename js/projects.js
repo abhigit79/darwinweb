@@ -1,189 +1,77 @@
-const portfolioData = {
-  domains: [
-    {
-      id: "multimodal",
-      label: "Multimodal",
-      heroTitle: "Multimodal",
-      heroLine: "Text, audio and vision systems",
-      title: "Text, audio, and vision systems",
-      summary: "Experiments across text understanding, audio representations, speech signals, fixed-class vision, open-vocabulary detection, and deployment-aware edge vision.",
-      signals: ["Text", "Audio", "Speech", "Vision", "YOLOv8", "OWL-ViT", "WavLM", "TFLite"]
-    },
-    {
-      id: "runtime",
-      label: "Runtime AI",
-      heroTitle: "Runtime AI",
-      heroLine: "Offline intelligence for device control",
-      title: "Resource-constrained intelligence for device control",
-      summary: "Offline and edge-first runtime ideas for smart devices, natural-language commands, local device control, embedded inference constraints, and reliable action layers.",
-      signals: ["Offline AI", "Runtime", "Voice control", "Intent", "Device action", "Edge inference"]
-    },
-    {
-      id: "edge-ai",
-      label: "Edge AI",
-      heroTitle: "Edge AI",
-      heroLine: "AI under real hardware constraints",
-      title: "Small models and embedded intelligence under hardware limits",
-      summary: "Compact NLP, audio acquisition, model-size tradeoffs, quantization thinking, memory limits, and deployment paths for constrained microcontrollers, processors, and edge hardware.",
-      signals: ["Tiny NLP", "MiniLM", "MCU", "Memory limits", "Audio acquisition", "Quantization"]
-    },
-    {
-      id: "sensor-platforms",
-      label: "Sensor Platforms",
-      heroTitle: "Sensor Platforms",
-      heroLine: "Physical signals to data systems",
-      title: "Sensor data pipelines and embedded electronics foundations",
-      summary: "Physical sensing, embedded acquisition, MQTT, AWS IoT ingestion, telemetry structure, RF electronics, hardware validation, and automotive RKE/PKE engineering background.",
-      signals: ["Sensors", "Telemetry", "MQTT", "AWS IoT", "RF", "Embedded electronics", "Validation"]
-    }
-  ],
-  projects: [
-    {
-      id: "offline-runtime-smart-home",
-      domain: "runtime",
-      name: "Offline Edge AI Runtime / Voice-Controlled Smart Home",
-      category: "Prototype / architecture exploration",
-      icon: "RT",
-      tags: ["Edge AI", "Runtime", "Voice", "Device control"],
-      line: "A resource-constrained AI pipeline that turns natural-language device commands into local device actions.",
-      objective: "Explore how useful AI behavior can run close to the device instead of depending on a full cloud loop for every command. The objective is voice to intent to device action under memory, latency, and reliability constraints.",
-      architecture: ["Voice command", "Local processing", "Intent representation", "Device controller", "Embedded runtime", "Device action"],
-      implementation: "The system is structured around a narrow action space, command parsing, an intent representation, and a local device-control layer. The runtime boundary is treated as a product surface: model output must become predictable, testable machine behavior.",
-      technologies: ["Embedded runtime concept", "Voice-command pipeline", "Intent representation", "Local inference", "Device-control logic", "Resource-constrained design"],
-      challenge: "The difficult part is not just running a model. It is making the model useful inside a constrained runtime where latency, memory, and predictable device action matter.",
-      learned: "Resource-constrained AI becomes interesting when the system design is forced to separate language understanding from safe, deterministic device control.",
-      future: "Extend the runtime toward multiple device classes with reusable command schemas and local context management."
-    },
-    {
-      id: "tiny-nlp-controller",
-      domain: "edge-ai",
-      name: "Tiny NLP Model for Embedded Device Control",
-      category: "Experiment",
-      icon: "NL",
-      tags: ["MiniLM", "Intent", "Entities", "Tiny NLP"],
-      line: "A compact NLP experiment for turning short device commands into structured intents and entities.",
-      objective: "Investigate whether a small language model pipeline can understand constrained device commands without requiring a heavyweight cloud LLM for every interaction.",
-      architecture: ["Command text", "Tokenizer", "Compact NLP model", "Intent/entity prediction", "Structured command", "Device layer"],
-      implementation: "The experiment focuses on tokenization, compact representation learning, intent labels, entity extraction, training/evaluation tradeoffs, and output formats that can be consumed by embedded device logic.",
-      technologies: ["MiniLM experimentation", "Tokenization", "Intent classification", "Entity extraction", "Structured commands", "Model-size evaluation"],
-      challenge: "The core tension is balancing useful language understanding against model size, memory pressure, latency, and predictable output behavior.",
-      learned: "Small models can be practical when the action space is constrained and the interface between model and device is designed carefully.",
-      future: "Compare compact model behavior with hybrid rule/model approaches before considering constrained embedded deployment."
-    },
-    {
-      id: "voice-command-interface",
-      domain: "runtime",
-      name: "Voice Command Device Interface",
-      category: "Prototype / architecture study",
-      icon: "VT",
-      tags: ["Voice", "Shared commands", "Device UI"],
-      line: "A voice-command control layer where natural language becomes the same structured device command representation.",
-      objective: "Design a common control architecture where multiple voice commands can drive predictable underlying device behavior.",
-      architecture: ["Voice input", "Command representation", "Device action", "Command confirmation", "Device action"],
-      implementation: "Voice commands are normalized into a shared command representation before reaching the device layer. The device layer receives structured actions instead of raw natural language.",
-      technologies: ["Voice interface", "Command schema", "Device-control layer", "voice interface design"],
-      challenge: "The challenge is keeping interaction natural-language input flexible while keeping the final device action deterministic.",
-      learned: "Voice-controlled systems become safer and cleaner when model output converges into a single control contract before reaching the device layer.",
-      future: "Add richer context so the command representation can include state, user preference, and sensor input."
-    },
-    {
-      id: "aws-iot-sensor-platform",
-      domain: "sensor-platforms",
-      name: "AWS IoT Sensor Platform",
-      category: "Architecture study",
-      icon: "IoT",
-      tags: ["Sensors", "MQTT", "AWS IoT", "Telemetry"],
-      line: "A device-to-cloud sensor-data pipeline from physical acquisition to structured telemetry ingestion.",
-      objective: "Connect physical sensor acquisition to a cloud ingestion path while keeping the data format structured and useful for monitoring, automation, or downstream analytics.",
-      architecture: ["Sensor", "Embedded device", "MQTT", "AWS IoT", "Data platform"],
-      implementation: "The system frames a sensor as a telemetry source, an embedded device as the acquisition and publishing node, MQTT as the transport, and AWS IoT as the managed ingestion layer.",
-      technologies: ["Physical sensors", "Embedded acquisition", "MQTT", "AWS IoT", "Structured telemetry", "Cloud ingestion"],
-      challenge: "Reliability, identity, certificates, message structure, and network constraints matter as much as the sensor reading itself.",
-      learned: "Good IoT platforms start with disciplined telemetry design, not dashboards.",
-      future: "Add fleet-style device identity, alert rules, and event-driven processing."
-    },
-    {
-      id: "max9814-audio",
-      domain: "edge-ai",
-      name: "MAX9814 Audio Acquisition / Edge Audio",
-      category: "Multimodal + Edge AI",
-      icon: "AU",
-      tags: ["MAX9814", "Audio", "ADC", "Signal path"],
-      line: "A microphone/audio acquisition experiment for future edge-audio and AI pipelines.",
-      objective: "Understand the signal-acquisition side of audio-first intelligent devices before the audio reaches an AI model.",
-      architecture: ["Microphone", "MAX9814", "ADC", "Audio samples", "Preprocessing", "Edge AI pipeline"],
-      implementation: "The work focuses on microphone gain behavior, analog signal characteristics, ADC sampling, buffering assumptions, and the quality requirements of downstream audio inference.",
-      technologies: ["MAX9814 microphone amplifier", "ADC sampling", "Audio buffers", "Signal acquisition", "Preprocessing", "Embedded audio"],
-      challenge: "Small audio systems are sensitive to noise, gain, timing, and sampling quality, all before any model is involved.",
-      learned: "Audio AI depends heavily on front-end engineering; model quality cannot compensate for a weak acquisition path.",
-      future: "Connect the acquisition path to wake-word, speech-embedding, or intent-recognition experiments."
-    },
-    {
-      id: "ravdess-wavlm",
-      domain: "multimodal",
-      name: "RAVDESS + WavLM Speech AI",
-      category: "AI research experiment",
-      icon: "SP",
-      tags: ["RAVDESS", "WavLM", "Speech", "Embeddings"],
-      line: "A speech-representation experiment using WavLM embeddings on the RAVDESS dataset.",
-      objective: "Test whether learned speech representations contain useful information for downstream emotion-related classification and richer audio understanding.",
-      architecture: ["Audio sample", "WavLM", "Speech embedding", "Downstream classifier", "Evaluation"],
-      implementation: "The experiment treats WavLM as a representation extractor, then evaluates whether the resulting embeddings support downstream classification on RAVDESS-style speech samples.",
-      technologies: ["RAVDESS dataset", "WavLM", "Audio embeddings", "Representation learning", "Classification evaluation"],
-      challenge: "Speech emotion datasets can be small, acted, and ambiguous, so the evaluation must be treated as research exploration rather than a production product.",
-      learned: "Speech contains useful signals beyond transcription, but downstream use requires careful dataset and evaluation discipline.",
-      future: "Compare embeddings across speech models and study how audio context could support multimodal device interaction."
-    },
-    {
-      id: "vision-yolo-owlvit",
-      domain: "multimodal",
-      name: "YOLOv8 / OWL-ViT Computer Vision",
-      category: "Computer vision experiment",
-      icon: "CV",
-      tags: ["YOLOv8", "OWL-ViT", "Detection", "Open vocabulary"],
-      line: "Object-detection experiments comparing fixed-class and open-vocabulary vision behavior.",
-      objective: "Explore modern perception pipelines and understand the difference between trained fixed-class detection and prompt-driven open-vocabulary detection.",
-      architecture: ["Image/frame", "YOLOv8 fixed classes", "OWL-ViT text query", "Detections", "Decision layer"],
-      implementation: "YOLOv8 represents the fixed-class detection path, while OWL-ViT represents open-vocabulary detection guided by text queries. The project studies how both approaches produce detections that can feed higher-level logic.",
-      technologies: ["YOLOv8", "OWL-ViT", "Object detection", "Vision-language models", "Confidence thresholds", "Perception pipeline"],
-      challenge: "Fixed-class models can be efficient and precise inside their label set, while open-vocabulary models are more flexible but require careful prompting and thresholding.",
-      learned: "Perception becomes useful when detections are connected to decisions, actions, or user-facing workflows.",
-      future: "Combine visual detection with device context and multimodal commands."
-    },
-    {
-      id: "food101-tflite",
-      domain: "multimodal",
-      name: "Calorie Detector - Food-101 to TFLite Edge Vision",
-      category: "Computer vision experiment",
-      icon: "F1",
-      tags: ["Food-101", "TFLite", "Classification", "Edge vision"],
-      line: "A dataset-to-deployment vision pipeline for food classification and mobile/edge inference.",
-      objective: "Explore the complete path from dataset selection to model training, evaluation, conversion, and deployment-oriented inference.",
-      architecture: ["Food-101 dataset", "Model training", "Evaluation", "TFLite conversion", "Mobile/edge inference"],
-      implementation: "The work frames food recognition as an image-classification problem and follows the deployment path toward TensorFlow Lite so model behavior can be evaluated outside a notebook.",
-      technologies: ["Food-101", "Image classification", "Model training", "TensorFlow Lite", "Mobile inference", "Edge vision"],
-      challenge: "The gap between a trained model and a deployable model includes size, latency, confidence behavior, and real-world image variation.",
-      learned: "Deployment constraints change how model quality should be judged.",
-      future: "Improve calibration, test quantization, and connect recognition output to a lightweight nutrition-estimation workflow."
-    },
-    {
-      id: "rke-pke",
-      domain: "sensor-platforms",
-      name: "RKE / PKE Development",
-      category: "Automotive electronics background",
-      icon: "RF",
-      tags: ["RKE", "PKE", "RF", "Embedded validation"],
-      line: "Automotive electronics work around Remote Keyless Entry, Passive Keyless Entry, RF circuitry, and validation.",
-      objective: "Represent deeper electronics and embedded-systems background outside AI/ML, especially automotive access systems and RF-oriented development.",
-      architecture: ["RF circuitry", "Embedded firmware", "Hardware validation", "RF measurement", "Automotive electronics"],
-      implementation: "The work relates to RKE/PKE system behavior, RF circuitry, embedded development, measurement, tuning, validation, and practical automotive electronics constraints.",
-      technologies: ["Remote Keyless Entry", "Passive Keyless Entry", "RF circuitry", "Embedded development", "Hardware validation", "RF measurement"],
-      challenge: "Automotive electronics requires disciplined validation because RF behavior, hardware tolerances, and system reliability directly affect product behavior.",
-      learned: "Strong embedded-AI work benefits from real electronics experience, especially where sensing, firmware, and hardware behavior meet.",
-      future: "Use this background to evaluate embedded AI systems with stronger hardware and validation discipline."
-    }
-  ]
-};
+const contactConfig = {
+      phoneDisplay: "+1-9427882407",
+      phoneHref: "tel:+19427882407",
+      email1: "",
+      email2: ""
+    };
 
+    const navTree = {
+      data: {
+        label: "Data Science",
+        summary: "Analytics, model evaluation, AI software systems, forecasting, customer intelligence, and finance-oriented decision support.",
+        children: [
+          { id: "finance", label: "Finance", summary: "Customer analytics, risk analytics, and applied AI in financial decision systems." },
+          { id: "others", label: "Others", summary: "General forecasting, NLP, recommendation, computer vision, audio AI, and ML experimentation." }
+        ]
+      },
+      engineering: {
+        label: "Engineering",
+        summary: "Software and AI systems engineering, with physical AI separated into its own hardware-aware branch.",
+        children: [
+          { id: "systems", label: "Systems", summary: "Runtime architecture, multimodal software pipelines, APIs, data platforms, RAG, and orchestration." },
+          { id: "physical-ai", label: "Physical AI", summary: "Hardware-aware AI, embedded control, sensing, audio acquisition, computer vision, and automotive electronics." }
+        ]
+      },
+      finance: {
+        label: "Finance",
+        summary: "Finance analytics projects are separated into customer analytics, risk analytics, and AI/model-evaluation work.",
+        children: [
+          { id: "customer-analytics", label: "Customer Analytics", summary: "Portfolio analytics, growth, outreach, segmentation, forecasting, and product performance." },
+          { id: "risk-analytics", label: "Risk Analytics", summary: "Credit-risk modelling, validation, governance, and risk-review workflows." },
+          { id: "finance-ai", label: "AI", summary: "Model evaluation, agentic AI, NLP, recommendations, forecasting, and ML experiments." }
+        ]
+      },
+      "finance-ai": {
+        label: "Finance AI",
+        summary: "AI work in this branch is presented as software, modelling, validation, and experimentation only.",
+        children: [
+          { id: "model-evaluation", label: "Model Evaluation", summary: "Exactly three evaluation projects: credit risk, marketing propensity, and time-series design." },
+          { id: "agentic-ai", label: "Agentic AI", summary: "Exactly two projects: enterprise RAG guardrails and multi-agent validation architecture." },
+          { id: "other-ai-ml", label: "Other AI/ML", summary: "NLP, recommendations, RAG, computer vision, audio representation learning, and efficient model research." }
+        ]
+      }
+    };
+    const projects = [
+      {cat:"customer-analytics",title:"Portfolio Analytics and Growth",kind:"Customer Analytics",summary:"Portfolio-performance and growth analytics for a developing analytics function.",workflow:["Portfolio data","Segmentation","Performance view","Forecast","Business decision"],objective:"Support portfolio planning by translating customer and product data into segmentation, performance views, predictive insights, budgeting inputs, and forecasting support.",implementation:"Built analytical views around portfolio behaviour, product performance, financial planning, and decision support for a customer analytics organisation as analytics maturity expanded.",methods:["Portfolio analytics","Customer segmentation","Forecasting","Budgeting support","Predictive insight development"],challenge:"Keeping analytical outputs useful for business planning without overstating precision or hiding assumptions.",evaluation:"Reviewed outputs through business interpretation, trend consistency, planning usefulness, and stakeholder review rather than invented public metrics.",status:"Professional analytics work, anonymised for public presentation.",next:"Package selected methods into repeatable portfolio monitoring and scenario workflows."},
+      {cat:"customer-analytics",title:"Marketing Analytics and Customer Outreach",kind:"Marketing Analytics",summary:"Propensity modelling, targeting, campaign measurement, and customer-feedback analytics.",workflow:["Customer data","Propensity model","Targeting","Campaign","Measurement"],objective:"Improve outreach relevance through propensity modelling, cross-sell and upsell targeting, next-best-product logic, campaign measurement, A/B testing, and feedback analysis.",implementation:"Connected customer features, model outputs, campaign groups, and measurement logic so marketing decisions could be evaluated with analytical evidence.",methods:["Propensity modelling","Cross-sell targeting","Upsell targeting","A/B testing","Customer-feedback NLP"],challenge:"Separating true signal from campaign noise, customer heterogeneity, and selection effects.",evaluation:"Used targeting quality, campaign measurement, experimental comparison, and feedback interpretation where supported by source material.",status:"Professional analytics work, anonymised for public presentation.",next:"Improve closed-loop campaign learning and explainable next-best-product recommendations."},
+      {cat:"customer-analytics",title:"Customer Behaviour and Business Forecasting",kind:"Time Series Forecasting",summary:"Customer behaviour, product performance, top-line forecasting, and decision translation.",workflow:["Behaviour data","Feature design","Forecast model","Error review","Decision support"],objective:"Use customer and product behaviour to support business forecasting and translate analytical outputs into planning decisions.",implementation:"Structured behavioural and product-performance data for forecasting, performance interpretation, and business review workflows.",methods:["Behaviour analytics","Product performance","Top-line forecasting","Feature engineering","Business translation"],challenge:"Turning model output into a decision narrative without implying certainty beyond the data.",evaluation:"Reviewed forecast quality through error analysis and business-planning usefulness where supported.",status:"Professional analytics work, anonymised for public presentation.",next:"Create reusable forecast-monitoring views with transparent assumptions."},
+      {cat:"risk-analytics",title:"Credit Risk Modelling and Validation",kind:"Risk Analytics",summary:"Credit-loss prediction, model evaluation, validation, governance, and risk review.",workflow:["Customer data","Feature engineering","Risk model","Validation","Governance review"],objective:"Support credit-risk decisions through modelling, validation, analytical dataset construction, credit-line analysis, portfolio forecasting, and lifecycle review.",implementation:"Worked with customer, transactional, and bureau-style data to support feature engineering, model evaluation, validation evidence, governance materials, and risk-review workflows.",methods:["Credit-loss prediction","PD evaluation","Feature engineering","Analytical datasets","Model governance","Risk review"],challenge:"Balancing statistical model evidence, business purpose, governance expectations, and explainability.",evaluation:"Assessed model behaviour through validation evidence, performance review, stability checks, and governance documentation without public performance claims.",status:"Professional risk analytics work, anonymised for public presentation.",next:"Extend monitoring and validation narratives into clearer model lifecycle dashboards."},
+      {cat:"model-evaluation",title:"Credit Risk PD Model Evaluation",kind:"Model evaluation",summary:"Validation and governance evidence for probability-of-default style credit-risk models.",workflow:["Model output","Validation evidence","Performance review","Governance","Risk decision"],objective:"Evaluate credit-risk model behaviour and provide analytical evidence for review, validation, and governance.",implementation:"Structured evaluation around input data, model outputs, feature behaviour, performance assessment, exceptions, documentation, and stakeholder review.",methods:["PD model evaluation","Validation evidence","Risk governance","Performance assessment","Analytical review"],challenge:"Producing evidence that is technically sound and understandable to both modelling and governance audiences.",evaluation:"Used model-validation reasoning and documented performance review without inventing public metrics.",status:"Professional model-evaluation work.",next:"Standardise validation packs and model-monitoring narratives."},
+      {cat:"model-evaluation",title:"Marketing Propensity Model Evaluation",kind:"Model evaluation",summary:"Evaluation of propensity models used for customer targeting and campaign measurement.",workflow:["Propensity score","Ranking review","Targeting","Campaign","Measurement"],objective:"Assess whether propensity-model outputs are useful for customer targeting, ranking, outreach prioritisation, and campaign learning.",implementation:"Reviewed model outputs in the context of campaign audiences, ranking quality, targeting relevance, and measured campaign response.",methods:["Propensity evaluation","Ranking quality","Targeting validation","Campaign measurement","A/B test interpretation"],challenge:"Connecting model quality to business action while accounting for campaign design and selection effects.",evaluation:"Used campaign measurement and targeting review where supported by the source material.",status:"Professional analytics and model-evaluation work.",next:"Improve monitoring of propensity drift and targeting performance over time."},
+      {cat:"model-evaluation",title:"Time-Series Model Design and Feature Engineering",kind:"Model design",summary:"Econometric forecasting, feature engineering, model design, and error assessment.",workflow:["Time-series data","Feature engineering","Forecast model","Error review","Planning input"],objective:"Design forecasting features and models for financial or business planning while reviewing forecast error and model behaviour.",implementation:"Built modelling workflows around temporal features, forecasting assumptions, evaluation, and planning interpretation.",methods:["Time-series modelling","Econometric forecasting","Feature engineering","MAPE review","MSE review"],challenge:"Forecasting must remain useful under changing business conditions and imperfect historical signal.",evaluation:"Assessed model error using supported forecast-error concepts such as MAPE and MSE without inventing improvement numbers.",status:"Professional and analytical modelling work.",next:"Add scenario comparison and transparent assumption tracking."},
+      {cat:"agentic-ai",title:"Enterprise RAG Chatbot - Context Management and Guardrails",kind:"Enterprise AI",summary:"Context construction, retrieval-grounded responses, guardrails, and exception handling.",workflow:["User request","Retrieval","Context build","Guardrails","Human review"],objective:"Design context-management and guardrail mechanisms for a RAG chatbot used in a team environment.",implementation:"Worked on retrieval-grounded response construction, context boundaries, policy constraints, unsupported-output reduction, exception review, and escalation logic.",methods:["RAG","Context management","Guardrails","Response evaluation","Human review"],challenge:"The central challenge is making generated answers useful while constraining unsupported or policy-inconsistent outputs.",evaluation:"Reviewed response quality, exceptions, and human-review paths without claiming unsupported production metrics.",status:"Professional enterprise AI work, with related personal experimentation kept separate.",next:"Strengthen regression tests for retrieval quality, policy exceptions, and unsupported claims."},
+      {cat:"agentic-ai",title:"Multi-Agent AI Application - Architecture and Validation Framework",kind:"Enterprise AI",summary:"Agent decomposition, orchestration, validation design, error analysis, and human-in-the-loop review.",workflow:["Task split","Agent orchestration","Rules/LLM logic","Validation","Monitoring"],objective:"Own application architecture and validation thinking for a multi-agent AI application where quality control matters as much as generation.",implementation:"Designed agent decomposition, orchestration logic, fine-tuned LLM and Python-rule interaction, evaluation framework, test design, error analysis, human decisions, and validation workflows.",methods:["Agent orchestration","Fine-tuned LLMs","Python rules","Evaluation framework","Quality metrics","Human-in-the-loop"],challenge:"Multi-agent systems need clear responsibility boundaries and strong validation because failures can move between agents.",evaluation:"Centred validation on test design, quality review, error analysis, monitoring, hands-on review, and later automated validation workflows.",status:"Professional enterprise AI architecture and validation work.",next:"Expand automated validation coverage and operational monitoring."},
+      {cat:"other-ai-ml",title:"NLP and Customer Feedback Summarisation",kind:"AI/ML experiment",summary:"NLP workflows for sentiment, feedback themes, and concise customer insight extraction.",workflow:["Text feedback","Preprocessing","NLP model","Themes","Summary"],objective:"Extract useful patterns from unstructured customer feedback while keeping interpretation clear and auditable.",implementation:"Organised text cleaning, sentiment analysis, theme extraction, summarisation, and review logic for customer-feedback use cases.",methods:["NLP","Sentiment analysis","Text summarisation","Theme extraction","Evaluation review"],challenge:"Customer language is noisy, subjective, and context dependent.",evaluation:"Review focuses on usefulness, coherence, unsupported outputs, and business interpretability.",status:"Professional and personal AI/ML work consolidated.",next:"Add stronger human-review loops and error taxonomies."},
+      {cat:"other-ai-ml",title:"Recommendation and Next-Best-Product Modelling",kind:"AI/ML project",summary:"Recommendation and ranking workflows for product relevance and customer targeting.",workflow:["Customer profile","Candidate products","Ranking model","Recommendation","Measurement"],objective:"Support relevant product recommendations and next-best-product decisions using customer data and model-based ranking.",implementation:"Combined segmentation, propensity signals, ranking logic, and campaign feedback to inform recommendation workflows.",methods:["Recommendation systems","Propensity modelling","Ranking","Segmentation","Campaign feedback"],challenge:"Recommendations must be relevant, explainable enough for business use, and evaluated against actual customer response.",evaluation:"Measured through campaign and targeting review where supported by source material.",status:"Professional analytics and AI/ML work.",next:"Add clearer experimentation design and recommendation monitoring."},
+      {cat:"other-ai-ml",title:"RAG and LLM Application Experiments",kind:"AI software",summary:"Retrieval-augmented generation, grounding, evaluation, and application behaviour experiments.",workflow:["Query","Retrieval","Context","LLM response","Review"],objective:"Explore how LLM applications can be grounded in retrieved context and evaluated for reliability.",implementation:"Built and studied RAG-style flows, chunking, context construction, response review, and tool-like application boundaries.",methods:["RAG","Embeddings","LLMs","Context construction","Response evaluation"],challenge:"The value is in grounding, evaluation, and product behaviour, not just calling a model.",evaluation:"Assessed coherence, grounding quality, exceptions, and unsupported outputs.",status:"Personal and professional AI software work.",next:"Add systematic test sets for retrieval and response failures."},
+      {cat:"other-ai-ml",title:"Computer Vision and Open-Vocabulary Detection",kind:"AI/ML experiment",summary:"YOLOv8 and OWL-ViT experiments for fixed-class and prompt-driven object detection.",workflow:["Image/frame","YOLOv8","OWL-ViT query","Detection","Decision"],objective:"Compare fixed-class object detection with open-vocabulary detection and understand how perception outputs feed downstream systems.",implementation:"Explored YOLOv8-style detection, OWL-ViT text-query detection, confidence thresholds, and perception-to-decision handoff.",methods:["YOLOv8","OWL-ViT","Object detection","Open vocabulary vision","Vision-language models"],challenge:"Fixed-class models are efficient inside known labels; open-vocabulary models are flexible but require careful prompting and thresholds.",evaluation:"Reviewed detections, confidence behaviour, prompt quality, and downstream usefulness.",status:"Personal AI/ML experiment.",next:"Connect detection outputs to multimodal reasoning and application workflows."},
+      {cat:"other-ai-ml",title:"Food-101 to TFLite Edge Vision",kind:"AI/ML experiment",summary:"Dataset-to-deployment image classification path for Food-101 and TFLite-oriented inference.",workflow:["Food-101","Training","Evaluation","TFLite conversion","Inference"],objective:"Explore the complete path from dataset to model to deployment-oriented inference.",implementation:"Structured food image classification around dataset preparation, training, evaluation, conversion, and constrained runtime thinking.",methods:["Food-101","Image classification","TFLite","Model conversion","Edge-oriented inference"],challenge:"Deployment changes model evaluation because size, latency, and confidence behaviour matter.",evaluation:"Reviewed model behaviour through classification quality, conversion feasibility, and deployment constraints.",status:"Personal AI/ML experiment.",next:"Improve calibration and compare quantization options."},
+      {cat:"other-ai-ml",title:"WavLM and RAVDESS Audio Representation Learning",kind:"AI research experiment",summary:"Speech embedding experiments using WavLM and RAVDESS for downstream classification research.",workflow:["Audio","WavLM","Embedding","Classifier","Evaluation"],objective:"Test whether learned speech representations contain useful downstream signal for emotion-related classification.",implementation:"Used WavLM as a representation extractor and evaluated embeddings on RAVDESS-style speech samples.",methods:["RAVDESS","WavLM","Speech embeddings","Representation learning","Classification"],challenge:"Speech emotion datasets can be small, acted, and ambiguous, so results must be framed carefully.",evaluation:"Assessed classification behaviour and representation usefulness without production claims.",status:"Personal AI research experiment.",next:"Compare speech models and richer evaluation splits."},
+      {cat:"others",title:"General Forecasting and Time-Series Modelling",kind:"Analytics project",summary:"Forecasting workflows outside the finance branch, focused on feature design and error review.",workflow:["Series data","Features","Model","Error review","Scenario"],objective:"Organise time-series data into forecast-ready features and evaluate model behaviour for planning use cases.",implementation:"Built forecasting logic around temporal features, error analysis, scenario interpretation, and decision support.",methods:["Time-series modelling","Feature engineering","Forecast evaluation","Scenario thinking"],challenge:"Forecasts must communicate uncertainty and assumptions clearly.",evaluation:"Uses error review and planning usefulness rather than invented public results.",status:"General analytics and modelling work.",next:"Create reusable forecast diagnostics."},
+      {cat:"others",title:"General NLP and Recommendation Experiments",kind:"Analytics and AI",summary:"Independent NLP, sentiment, recommendation, and ranking experiments outside finance-specific framing.",workflow:["Raw data","Features","Model","Evaluation","Application"],objective:"Explore reusable NLP and recommendation patterns that can apply beyond financial use cases.",implementation:"Combined text processing, sentiment interpretation, ranking logic, and evaluation review in reusable experiment structures.",methods:["NLP","Sentiment analysis","Recommendations","Ranking","Evaluation"],challenge:"General models need careful task framing to avoid vague or misleading outputs.",evaluation:"Reviewed interpretability, ranking quality, and output usefulness.",status:"General AI/ML experimentation.",next:"Build reusable benchmark examples."},
+      {cat:"systems",title:"Resource-Efficient AI Runtime Architecture",kind:"Systems architecture",summary:"Runtime architecture for efficient AI applications without exposing hardware details.",workflow:["Input","Runtime context","Model service","Policy layer","Action/API"],objective:"Design a reusable intelligence layer that can process commands, manage context, and produce structured actions across software systems.",implementation:"Separated runtime context, model calls, command schemas, policy boundaries, and downstream API actions so AI behaviour can be controlled and reused.",methods:["Runtime architecture","Context management","Inference workflow","Policy boundaries","API design"],challenge:"The runtime must make AI behaviour predictable without revealing internal implementation details.",evaluation:"Reviewed through architecture consistency, latency awareness, and failure handling.",status:"Systems architecture and personal product thinking.",next:"Create SDK-facing examples for integration workflows."},
+      {cat:"systems",title:"Multimodal Software Pipelines",kind:"Systems architecture",summary:"Text, audio, and vision processing pipelines connected by common software contracts.",workflow:["Text/audio/vision","Preprocess","Representation","Decision layer","API"],objective:"Create software pipeline patterns where different input modes produce structured outputs for applications.",implementation:"Designed modality-specific preprocessing and shared representations so systems can reason across text, audio, and vision inputs.",methods:["Multimodal pipelines","Text processing","Audio representations","Vision outputs","Software contracts"],challenge:"Different modalities fail differently, so a shared pipeline needs strong contracts and clear fallbacks.",evaluation:"Reviewed through interface clarity, error cases, and integration behaviour.",status:"Systems and AI software architecture.",next:"Add benchmark tasks and integration templates."},
+      {cat:"systems",title:"RAG and Agentic System Architecture",kind:"Systems architecture",summary:"Retrieval, context, orchestration, validation, and guardrail architecture for AI software.",workflow:["Task","Retrieval","Context","Agent/rules","Validation"],objective:"Build AI software flows where retrieval, agents, rules, and validation are explicit parts of the architecture.",implementation:"Combined RAG, context construction, agent decomposition, Python rules, evaluation hooks, and human-review paths.",methods:["RAG","Agent orchestration","Guardrails","Validation framework","Monitoring"],challenge:"Reliability depends on architecture and validation, not model capability alone.",evaluation:"Uses test design, exception review, and error analysis.",status:"Professional and personal AI systems work.",next:"Expand automated checks for context, policy, and output quality."},
+      {cat:"systems",title:"Sensor-Data Software Platform",kind:"Systems architecture",summary:"Sensor-data pipelines presented at the software, data-flow, API, and cloud-integration level.",workflow:["Signal data","Ingestion","Message bus","Cloud service","Data platform"],objective:"Describe physical data ingestion as a software platform without exposing hardware implementation details.",implementation:"Structured data-flow concepts around ingestion, message transport, cloud integration, telemetry schemas, and downstream analytics.",methods:["Telemetry design","MQTT-style messaging","Cloud integration","APIs","Data pipelines"],challenge:"Reliable data platforms require disciplined schemas and operational failure handling.",evaluation:"Reviewed through data-flow clarity, integration boundaries, and observability needs.",status:"Systems and data-platform architecture.",next:"Create clearer platform diagrams and API contracts."},
+      {cat:"physical-ai",title:"Offline Edge AI Runtime / Voice-Controlled Smart Home",kind:"Physical AI prototype",summary:"A resource-constrained AI pipeline that turns natural-language commands into local device actions.",workflow:["Voice command","Local processing","Intent","Controller","Device action"],objective:"Explore how useful AI behaviour can run close to a device rather than depending on a full cloud loop for every command.",implementation:"Structured the system around command parsing, intent representation, local inference constraints, and predictable device-control behaviour.",methods:["Edge AI","Voice commands","Intent representation","Embedded runtime","Device control"],challenge:"The hard part is making model output deterministic enough for physical action.",evaluation:"Reviewed latency, action consistency, memory awareness, and control behaviour.",status:"Personal prototype and architecture exploration.",next:"Extend toward multi-device orchestration and local context management."},
+      {cat:"physical-ai",title:"Tiny NLP Model for Embedded Device Control",kind:"Physical AI experiment",summary:"Compact NLP experiment for turning short device commands into structured intents and entities.",workflow:["Command","Tokenizer","Compact NLP","Intent/entity","Action"],objective:"Investigate whether small model pipelines can understand constrained device commands without heavyweight cloud infrastructure.",implementation:"Explored tokenization, compact representations, intent labels, entity extraction, training/evaluation, and structured outputs.",methods:["MiniLM experimentation","Tokenization","Intent classification","Entity extraction","Model-size evaluation"],challenge:"Balancing language understanding against memory, latency, and predictable output behaviour.",evaluation:"Research/experiment framing only; not presented as a production deployment.",status:"Personal experiment.",next:"Compare compact model behaviour with hybrid rules and model approaches."},
+      {cat:"physical-ai",title:"Voice + Touch Multimodal Interface",kind:"Physical AI concept",summary:"A common device-control layer where voice and touch can produce the same command representation.",workflow:["Voice/touch input","Command representation","Device-control layer","Action"],objective:"Design a control architecture where multiple interaction modes drive the same underlying physical behaviour.",implementation:"Voice commands and touch events are normalised into a shared command contract before reaching the device layer.",methods:["Voice interface","Touch UI","Command schema","Device-control layer","Physical AI"],challenge:"Avoiding duplicated control logic while keeping physical action predictable.",evaluation:"Reviewed through interface clarity, action consistency, and failure cases.",status:"Architecture concept and prototype direction.",next:"Add richer state and sensor context to the command representation."},
+      {cat:"physical-ai",title:"AWS IoT Sensor Platform",kind:"Physical data platform",summary:"A sensor-data pipeline from physical acquisition to structured telemetry ingestion.",workflow:["Sensor","Embedded device","MQTT","AWS IoT","Data platform"],objective:"Connect physical sensor acquisition to cloud ingestion while keeping telemetry structured and useful.",implementation:"Framed the sensor as a telemetry source, an embedded device as acquisition/publishing node, MQTT as transport, and AWS IoT as managed ingestion.",methods:["Physical sensors","Embedded acquisition","MQTT","AWS IoT","Structured telemetry"],challenge:"Reliability, identity, certificates, message structure, and constrained networks matter as much as the reading.",evaluation:"Reviewed through data-flow clarity, reliability assumptions, and cloud-ingestion behaviour.",status:"Architecture study and prototype work.",next:"Add fleet-style identity, alert rules, and event-driven processing."},
+      {cat:"physical-ai",title:"MAX9814 Audio Acquisition / Edge Audio",kind:"Physical AI experiment",summary:"Microphone/audio acquisition experiment for future edge-audio and AI pipelines.",workflow:["Microphone","MAX9814","ADC","Audio samples","AI pipeline"],objective:"Understand the signal-acquisition side of audio-first intelligent devices before audio reaches a model.",implementation:"Focused on microphone gain behaviour, analog characteristics, ADC sampling, buffering, and downstream audio inference requirements.",methods:["MAX9814","ADC sampling","Audio buffers","Signal acquisition","Preprocessing"],challenge:"Noise, gain, timing, and sampling quality shape the model input before AI begins.",evaluation:"Reviewed signal quality, capture assumptions, and fit for downstream audio models.",status:"Personal hardware/audio experiment.",next:"Connect acquisition to wake-word, speech embedding, or intent experiments."},
+      {cat:"physical-ai",title:"RAVDESS + WavLM Speech AI",kind:"Audio AI experiment",summary:"Speech representation work connected to audio-first interaction research.",workflow:["Audio","WavLM","Embedding","Classifier","Evaluation"],objective:"Explore whether speech representations can support richer audio understanding for downstream tasks.",implementation:"Used WavLM embeddings with RAVDESS-style speech samples and evaluated downstream classification behaviour.",methods:["RAVDESS","WavLM","Speech embeddings","Classification","Audio representation learning"],challenge:"Speech signals are nuanced and dataset context matters heavily.",evaluation:"Treated as research exploration, not a production speech product.",status:"Personal AI research experiment.",next:"Connect representation quality to real-time audio pipeline constraints."},
+      {cat:"physical-ai",title:"YOLOv8 / OWL-ViT Computer Vision",kind:"Physical AI perception",summary:"Object detection and open-vocabulary vision experiments for perception pipelines.",workflow:["Frame","YOLOv8","OWL-ViT","Detections","Decision"],objective:"Study fixed-class and open-vocabulary detection for systems that perceive physical environments.",implementation:"Compared YOLOv8-style object detection with OWL-ViT text-query detection and downstream decision handoff.",methods:["YOLOv8","OWL-ViT","Object detection","Open-vocabulary vision","Perception"],challenge:"Perception is useful only when detections are stable enough for action or decision logic.",evaluation:"Reviewed detections, thresholds, prompt quality, and downstream usefulness.",status:"Personal computer-vision experiment.",next:"Connect perception output with multimodal device context."},
+      {cat:"physical-ai",title:"Food-101 to TFLite Edge Vision",kind:"Edge vision experiment",summary:"Food image classification path from dataset to TFLite-oriented deployment.",workflow:["Food-101","Training","Evaluation","TFLite","Edge inference"],objective:"Explore dataset-to-model-to-deployment workflow for constrained vision inference.",implementation:"Structured image classification around Food-101, model training, evaluation, conversion, and runtime constraints.",methods:["Food-101","Image classification","TFLite","Model conversion","Edge inference"],challenge:"Deployment constraints change how classification quality should be judged.",evaluation:"Reviewed classification behaviour, conversion feasibility, and constrained inference needs.",status:"Personal AI/ML experiment.",next:"Compare compression and quantization strategies."},
+      {cat:"physical-ai",title:"RKE / PKE Development",kind:"Automotive electronics background",summary:"Remote Keyless Entry and Passive Keyless Entry work across RF, antenna, embedded, and validation concerns.",workflow:["RF circuitry","Antenna behaviour","Embedded firmware","Measurement","Validation"],objective:"Represent deeper electronics and embedded-systems background outside AI/ML.",implementation:"Work relates to RKE/PKE system behaviour, RF circuitry, antenna design/tuning, embedded development, measurement, validation, and automotive constraints.",methods:["Remote Keyless Entry","Passive Keyless Entry","RF circuitry","Antenna design","Embedded validation"],challenge:"Automotive electronics requires disciplined validation because RF behaviour and hardware tolerances directly affect product behaviour.",evaluation:"Reviewed through RF measurement, tuning, validation, and practical electronics constraints.",status:"Professional automotive R&D environment experience, anonymised.",next:"Use the electronics background to evaluate physical AI systems with stronger hardware discipline."}
+    ];
 
-
+    const researchInterests = ["Resource-efficient AI", "Small language models", "Multimodal learning", "Audio and vision representations", "Agentic AI evaluation and guardrails", "Physical AI", "Model efficiency and inference optimisation"];
