@@ -1,104 +1,135 @@
-const state = {
-  activeDomain: portfolioData.domains[0].id,
-  activeProject: null
-};
+const state = { path: [], selectedProject: null };
+    const stage = document.querySelector("#stage");
+    const breadcrumb = document.querySelector("#breadcrumb");
+    const backButton = document.querySelector("#backButton");
 
-const heroSections = document.querySelector("#heroSections");
-const projectCarousel = document.querySelector("#projectCarousel");
-const projectCount = document.querySelector("#projectCount");
-const modalBackdrop = document.querySelector("#modalBackdrop");
-const modalContent = document.querySelector("#modalContent");
-const modalClose = document.querySelector("#modalClose");
+    function setPath(path, push = true) {
+      state.path = path;
+      state.selectedProject = null;
+      if (push) history.pushState({ path }, "", path.length ? "#" + path.join("/") : "#explore");
+      render();
+    }
 
-function visibleProjects() {
-  return portfolioData.projects.filter((project) => project.domain === state.activeDomain);
-}
+    function currentId() { return state.path[state.path.length - 1]; }
+    function childNode(id) { return navTree[id]; }
+    function projectsFor(id) { return projects.filter(p => p.cat === id); }
+    function isProjectCategory(id) { return projectsFor(id).length > 0; }
 
-function setActiveDomain(id) {
-  state.activeDomain = id;
-  render();
-}
+    function render() {
+      const id = currentId();
+      backButton.hidden = state.path.length === 0;
+      breadcrumb.textContent = state.path.length ? state.path.map(x => (navTree[x]?.label || labelForProjectCat(x))).join(" / ") : "Choose a direction";
+      if (!id) return renderRoot();
+      if (childNode(id)) return renderChildren(id);
+      if (isProjectCategory(id)) return renderProjects(id);
+    }
 
-function renderHeroSections() {
-  heroSections.innerHTML = portfolioData.domains.map((domain) => `
-    <button class="hero-section ${domain.id === state.activeDomain ? "active" : ""}" type="button" data-domain="${domain.id}" aria-pressed="${domain.id === state.activeDomain}">
-      <span>${domain.heroTitle}</span>
-      <small>${domain.heroLine}</small>
-    </button>
-  `).join("");
+    function labelForProjectCat(id) {
+      const labels = {"customer-analytics":"Customer Analytics","risk-analytics":"Risk Analytics","model-evaluation":"Model Evaluation","agentic-ai":"Agentic AI","other-ai-ml":"Other AI/ML","others":"Others","systems":"Systems","physical-ai":"Physical AI"};
+      return labels[id] || id;
+    }
 
-  heroSections.querySelectorAll(".hero-section").forEach((button) => {
-    button.addEventListener("click", () => setActiveDomain(button.dataset.domain));
-  });
-}
+    function renderRoot() {
+      stage.className = "split-stage";
+      stage.innerHTML = `
+        <article class="panel"><button class="panel-btn" type="button" data-domain="data"><h2>Data Science</h2><p>Finance, analytics, model evaluation, AI software systems, forecasting, and customer intelligence.</p></button></article>
+        <article class="panel"><button class="panel-btn" type="button" data-domain="engineering"><h2>Engineering</h2><p>Systems architecture, runtime design, multimodal pipelines, data platforms, and physical AI.</p></button></article>`;
+      stage.querySelectorAll("[data-domain]").forEach(btn => btn.addEventListener("click", () => {
+        stage.classList.add(btn.dataset.domain === "data" ? "selected-left" : "selected-right");
+        setTimeout(() => setPath([btn.dataset.domain]), 420);
+      }));
+    }
 
-function renderProjects() {
-  const projects = visibleProjects();
-  projectCount.textContent = `${projects.length} linked projects`;
-  projectCarousel.innerHTML = projects.map((project) => `
-    <button class="project-card" type="button" data-project="${project.id}" aria-label="Open ${project.name}">
-      <span class="project-icon">${project.icon}</span>
-      <span class="project-category">${project.category}</span>
-      <strong>${project.name}</strong>
-      <small>${project.line}</small>
-      <span class="tag-row">${project.tags.map((tag) => `<em>${tag}</em>`).join("")}</span>
-    </button>
-  `).join("");
+    function renderChildren(id) {
+      const node = childNode(id);
+      stage.className = "split-stage selected-left";
+      const gridClass = node.children.length === 3 ? "tile-grid three" : "tile-grid";
+      stage.innerHTML = `<section class="subnav active" style="grid-column:1/-1"><div class="subnav-head"><h2>${node.label}</h2><p>${node.summary}</p></div><div class="${gridClass}">${node.children.map(child => `<button class="tile" type="button" data-child="${child.id}"><strong>${child.label}</strong><span>${child.summary}</span></button>`).join("")}</div></section>`;
+      stage.querySelectorAll("[data-child]").forEach(btn => btn.addEventListener("click", () => setPath([...state.path, btn.dataset.child])));
+    }
 
-  projectCarousel.querySelectorAll(".project-card").forEach((button) => {
-    button.addEventListener("click", () => openProject(button.dataset.project));
-  });
-}
+    function renderProjects(id) {
+      const list = projectsFor(id);
+      const selected = list.find(p => p.title === state.selectedProject) || list[0];
+      state.selectedProject = selected?.title || null;
+      stage.className = "split-stage selected-left";
+      stage.innerHTML = `<section class="project-view active" style="grid-column:1/-1"><div class="project-head"><div><h2>${labelForProjectCat(id)}</h2><p>${projectIntro(id)}</p></div></div><div class="project-ribbon">${list.map(p => `<button class="project-card ${p.title === selected.title ? "active" : ""}" type="button" data-project="${escapeAttr(p.title)}"><small>${p.kind}</small><strong>${p.title}</strong><span>${p.summary}</span></button>`).join("")}</div><article class="project-detail" id="projectDetail"></article></section>`;
+      stage.querySelectorAll("[data-project]").forEach(btn => btn.addEventListener("click", () => { state.selectedProject = btn.dataset.project; renderProjects(id); }));
+      renderDetail(selected, id);
+    }
+    function projectIntro(id) {
+      const copy = {
+        "customer-analytics":"Professional analytics projects focused on customer, portfolio, marketing, and business planning work.",
+        "risk-analytics":"Risk analytics work presented without employer names, fabricated metrics, or claims of sole ownership.",
+        "model-evaluation":"Exactly three model-evaluation projects: credit risk PD, marketing propensity, and time-series design.",
+        "agentic-ai":"Exactly two agentic-AI projects focused on guardrails, context management, architecture, and validation.",
+        "other-ai-ml":"AI/ML work consolidated without exposing hardware engineering details in the Data Science branch.",
+        "others":"Non-finance analytics, modelling, NLP, recommendation, computer vision, audio AI, and ML experiments.",
+        "systems":"Systems architecture without hardware details: runtime, multimodal software, RAG, APIs, orchestration, and data platforms.",
+        "physical-ai":"The hardware-aware branch: physical computing, edge audio, embedded control, RF, vision, sensing, and automotive electronics."
+      };
+      return copy[id] || "Project details.";
+    }
 
-function diagram(project) {
-  return `<div class="diagram-line" aria-label="Project architecture">${project.architecture.map((step) => `<span>${step}</span>`).join("<b></b>")}</div>`;
-}
+    function renderDetail(project, id) {
+      const detail = document.querySelector("#projectDetail");
+      const research = ["finance-ai","other-ai-ml","systems","physical-ai"].includes(id) ? `<div class="research-strip"><strong>Research interests:</strong> ${researchInterests.join("; ")}. These are interests and experiments, not fabricated publications.</div>` : "";
+      detail.innerHTML = `
+        <div class="detail-title"><div><h3>${project.title}</h3><p>${project.summary}</p><div class="tag-row">${project.methods.map(m => `<em>${m}</em>`).join("")}</div></div></div>
+        <div class="diagram">${project.workflow.map(step => `<span>${step}</span>`).join("<b></b>")}</div>
+        <div class="detail-grid">
+          <section><h4>Problem / Objective</h4><p>${project.objective}</p></section>
+          <section><h4>Technical Implementation</h4><p>${project.implementation}</p></section>
+          <section><h4>Technologies / Methods</h4><ul>${project.methods.map(m => `<li>${m}</li>`).join("")}</ul></section>
+          <section><h4>Technical Challenge</h4><p>${project.challenge}</p></section>
+          <section><h4>Evaluation / Results</h4><p>${project.evaluation}</p></section>
+          <section><h4>Status and Next Step</h4><p><strong>${project.status}</strong> ${project.next}</p></section>
+        </div>${research}`;
+    }
 
-function techList(items) {
-  return `<ul class="tech-list-modal">${items.map((item) => `<li>${item}</li>`).join("")}</ul>`;
-}
+    function escapeAttr(value) { return value.replace(/"/g, "&quot;"); }
 
-function openProject(id) {
-  const project = portfolioData.projects.find((item) => item.id === id);
-  if (!project) return;
-  state.activeProject = project.id;
-  modalContent.innerHTML = `
-    <div class="modal-header">
-      <span class="project-category">${project.category}</span>
-      <h2 id="modalTitle">${project.name}</h2>
-      <p>${project.line}</p>
-      <div class="tag-row">${project.tags.map((tag) => `<em>${tag}</em>`).join("")}</div>
-    </div>
-    <div class="detail-grid">
-      <section><h3>Problem / Objective</h3><p>${project.objective}</p></section>
-      <section class="architecture-section"><h3>Architecture</h3>${diagram(project)}</section>
-      <section><h3>Technical Implementation</h3><p>${project.implementation}</p></section>
-      <section><h3>Technologies / Components</h3>${techList(project.technologies)}</section>
-      <section><h3>Key Technical Challenge</h3><p>${project.challenge}</p></section>
-      <section><h3>What I explored / learned</h3><p>${project.learned}</p></section>
-      <section><h3>Potential next step</h3><p>${project.future}</p></section>
-    </div>
-  `;
-  modalBackdrop.hidden = false;
-  modalClose.focus();
-}
+    backButton.addEventListener("click", () => {
+      if (!state.path.length) return;
+      setPath(state.path.slice(0, -1));
+    });
 
-function closeProject() {
-  modalBackdrop.hidden = true;
-  state.activeProject = null;
-}
+    window.addEventListener("popstate", event => {
+      state.path = event.state?.path || parseHash();
+      state.selectedProject = null;
+      render();
+    });
 
-function render() {
-  renderHeroSections();
-  renderProjects();
-}
+    function parseHash() {
+      const raw = location.hash.replace(/^#/, "");
+      if (!raw || raw === "explore") return [];
+      return raw.split("/").filter(Boolean);
+    }
 
-modalClose.addEventListener("click", closeProject);
-modalBackdrop.addEventListener("click", (event) => {
-  if (event.target === modalBackdrop) closeProject();
-});
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && !modalBackdrop.hidden) closeProject();
-});
+    function setupContact() {
+      const backdrop = document.querySelector("#contactBackdrop");
+      const button = document.querySelector("#contactButton");
+      const close = document.querySelector("#closeContact");
+      document.querySelector("#contactPhone").textContent = contactConfig.phoneDisplay;
+      document.querySelector("#contactPhone").href = contactConfig.phoneHref;
+      setEmail("#emailOne", contactConfig.email1);
+      setEmail("#emailTwo", contactConfig.email2);
+      function open(){backdrop.classList.add("open");close.focus();}
+      function shut(){backdrop.classList.remove("open");button.focus();}
+      button.addEventListener("click", open);
+      close.addEventListener("click", shut);
+      backdrop.addEventListener("click", event => { if (event.target === backdrop) shut(); });
+      document.addEventListener("keydown", event => { if (event.key === "Escape" && backdrop.classList.contains("open")) shut(); });
+    }
 
-render();
+    function setEmail(selector, value) {
+      const node = document.querySelector(selector);
+      if (!value) { node.textContent = "Empty placeholder"; node.classList.add("empty"); return; }
+      node.innerHTML = `<a href="mailto:${value}">${value}</a>`;
+      node.classList.remove("empty");
+    }
+
+    setupContact();
+    history.replaceState({ path: parseHash() }, "", location.hash || "#explore");
+    state.path = parseHash();
+    render();
