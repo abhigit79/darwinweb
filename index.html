@@ -3,58 +3,80 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Engineering Portfolio | Embedded AI, Multimodal Systems, Physical AI</title>
-  <meta name="description" content="A technical engineering portfolio spanning resource-constrained AI hardware, multimodal AI, physical AI, financial intelligence, and research interests." />
-  <link rel="icon" href="images/logo.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="css/style.css" />
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLYBDSSKZY"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag("js", new Date());
-    gtag("config", "G-LLYBDSSKZY");
-  </script>
+  <title>Darwin Edge AI Portfolio</title>
+  <meta name="description" content="Portfolio across data science, AI systems, engineering, finance, and physical AI." />
+    <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <div class="shell-grid" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+  <a class="contact-fab" id="contactButton" href="contact.html">Contact</a>
+  <main>
+    <section class="landing" id="landing" aria-label="Landing">
+  <div class="landing-content">
+    <h2>Art of</h2>
+    <h1>Machine Learning</h1>
 
-  <header class="topbar">
-    <a class="brand" href="index.html" aria-label="Portfolio home">
-      <img src="images/logo.svg" alt="" />
-      <span>Systems Portfolio</span>
-    </a>
-    <nav class="quick-nav" aria-label="Quick links">
-      <a href="contact.html">Contact</a>
-    </nav>
-  </header>
+    <div class="landing-boxes">
 
-  <main class="app-shell">
-    <section class="hero-panel" aria-labelledby="hero-title">
-      <div>
-        <p class="eyebrow">Engineering / AI / physical computing</p>
-        <h1 id="hero-title">AI systems that connect intelligence to the physical world.</h1>
-        <p class="hero-line">Embedded AI &middot; Text, Audio and Vision &middot; Physical AI &middot; Sensor Platforms</p>
+  <div class="landing-box landing-left">
+    <p>What I don't do</p>
+    <h3>How to use AI in your business</h3>
+
+
+  </div>
+
+  <div class="landing-box landing-right">
+    <p>What I do</p>
+    <h3>How to integrate AI</h3>
+    <h4>in your business using most efficient software architecture.</h4>
+
+  </div>
+
+      <p class="scroll-hint">Scroll down to see more ↓</p>
+
+</div>
+  </div>
+</section>
+
+    <section class="experience" id="experience" aria-label="Portfolio navigation">
+      <div class="level-bar">
+        <div class="breadcrumb" id="breadcrumb">Choose a direction</div>
+        <button class="back-btn" id="backButton" type="button" hidden>Back</button>
       </div>
-      <div class="hero-instrument" id="heroSections" aria-label="Portfolio sections"></div>
-    </section>
-<section class="project-zone" aria-label="Projects">
-      <div class="zone-heading">
-        <p class="eyebrow">Linked project</p>
-        <span id="projectCount"></span>
+
+      <div class="split-stage" id="stage">
+        <article class="panel" id="panel-data">
+          <button class="panel-btn" type="button" data-action="domain" data-value="data">
+            <h2>Data Science</h2>
+            <p>Finance, analytics, model evaluation, AI software systems, forecasting, and customer intelligence.</p>
+          </button>
+        </article>
+        <article class="panel" id="panel-engineering">
+          <button class="panel-btn" type="button" data-action="domain" data-value="engineering">
+            <h2>Engineering</h2>
+            <p>Systems architecture, runtime design, multimodal pipelines, data platforms, and physical AI.</p>
+          </button>
+        </article>
       </div>
-      <div class="project-carousel" id="projectCarousel" tabindex="0" aria-label="Horizontally scrollable project carousel"></div>
     </section>
   </main>
 
-  <div class="modal-backdrop" id="modalBackdrop" hidden>
-    <section class="project-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <button class="modal-close" id="modalClose" type="button" aria-label="Close project detail">Close</button>
-      <div id="modalContent"></div>
+  <div class="contact-backdrop" id="contactBackdrop" role="presentation">
+    <section class="contact-panel" id="contactPanel" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
+      <header>
+        <h2 id="contactTitle">Contact</h2>
+        <button class="close-contact" id="closeContact" type="button" aria-label="Close contact panel">Close</button>
+      </header>
+      <div class="contact-list">
+        <div class="contact-line"><span>Phone</span><a id="contactPhone" href="tel:+19427882407">+1-9427882407</a></div>
+        <div class="contact-line"><span>Email 1</span><strong id="emailOne" class="empty">Empty placeholder</strong></div>
+        <div class="contact-line"><span>Email 2</span><strong id="emailTwo" class="empty">Empty placeholder</strong></div>
+      </div>
     </section>
   </div>
+
 
   <script src="js/projects.js"></script>
   <script src="js/script.js"></script>
 </body>
 </html>
-
