@@ -16,7 +16,7 @@ const contactConfig = {
       },
       engineering: {
         label: "Engineering",
-        summary: "Software and AI systems engineering, with physical AI separated into its own hardware-aware branch.",
+        summary: "Software and multimodal IoT systems engineering with physical AI",
         children: [
           { id: "systems", label: "Systems", summary: "Runtime architecture, multimodal software pipelines, APIs, data platforms, RAG, and orchestration." },
           { id: "physical-ai", label: "Physical AI", summary: "Hardware-aware AI, embedded control, sensing, audio acquisition, computer vision, and automotive electronics." }
